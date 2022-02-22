@@ -7,9 +7,8 @@ import (
 	"path"
 	"strconv"
 
-	"github.com/ppai-plivo/ut/pkg/db"
-
-	"github.com/plivo/pkg/log"
+	"github.com/prashanthpai/ut/pkg/db"
+	"github.com/prashanthpai/ut/pkg/log"
 )
 
 type Store interface {
@@ -38,14 +37,14 @@ func (s *Service) HandleRequest(w http.ResponseWriter, r *http.Request) {
 
 	user, err := s.store.GetUserByID(context.TODO(), userID)
 	if err != nil {
-		s.logger.Errorw("store.GetUserByID() failed", "error", err.Error())
+		s.logger.Errorf("store.GetUserByID() failed", err.Error())
 		http.Error(w, "user not found", http.StatusNotFound)
 		return
 	}
 
 	b, err := json.Marshal(user)
 	if err != nil {
-		s.logger.Errorw("json.Marshal() failed", "error", err.Error())
+		s.logger.Errorf("json.Marshal() failed", err.Error())
 		http.Error(w, "server malfunctioned", http.StatusInternalServerError)
 		return
 	}
@@ -55,6 +54,6 @@ func (s *Service) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	if _, err := w.Write(b); err != nil {
-		s.logger.Errorw("w.Write() failed", "error", err.Error())
+		s.logger.Errorf("w.Write() failed", err.Error())
 	}
 }

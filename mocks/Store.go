@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	db "github.com/ppai-plivo/ut/pkg/db"
+	db "github.com/prashanthpai/ut/pkg/db"
 	mock "github.com/stretchr/testify/mock"
 )
 

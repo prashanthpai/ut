@@ -1,26 +1,19 @@
 package main
 
 import (
-	stdlog "log"
 	"net/http"
 
-	"github.com/ppai-plivo/ut/pkg/db"
-
-	"github.com/plivo/pkg/log"
+	"github.com/prashanthpai/ut/pkg/db"
+	"github.com/prashanthpai/ut/pkg/log"
 )
 
 func main() {
-	logger, err := log.NewLogger(&log.Config{
-		Environment: "prod",
-	})
-	if err != nil {
-		stdlog.Fatalf("log.NewLogger() failed: %s", err.Error())
-	}
-	defer logger.Sync()
+	logger := log.New()
 
 	dbClient, err := db.NewClient("db endpoint")
 	if err != nil {
-		logger.Fatalw("db.NewClient() failed", "error", err.Error())
+		logger.Errorf("db.NewClient() failed: error: %s", err.Error())
+		return
 	}
 
 	svc := New(dbClient, logger)
