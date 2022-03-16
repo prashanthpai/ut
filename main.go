@@ -10,7 +10,7 @@ import (
 func main() {
 	logger := log.New()
 
-	dbClient, err := db.NewClient("db endpoint")
+	dbClient, err := db.NewClient("postgresql://ppai:xxxxxxxx@localhost:5432/ppai")
 	if err != nil {
 		logger.Errorf("db.NewClient() failed: error: %s", err.Error())
 		return

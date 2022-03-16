@@ -3,6 +3,10 @@ package db
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"time"
+
+	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
 type DB struct {
@@ -13,6 +17,13 @@ func NewClient(connStr string) (*DB, error) {
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		return nil, err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	if err := db.PingContext(ctx); err != nil {
+		return nil, fmt.Errorf("failed to ping db: %w", err)
 	}
 
 	return &DB{
